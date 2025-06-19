@@ -1,8 +1,12 @@
 import React, { createContext, useEffect, useState } from "react";
 import axios from "axios";
+
+
 import config from "../config/config";
 
+
 export const NotesContext = createContext();
+
 
 const NotesContextProvider = (props) => {
   const backendUrl = config.backend_url;
@@ -41,5 +45,6 @@ const NotesContextProvider = (props) => {
     </NotesContext.Provider>
   );
 };
+
 
 export default NotesContextProvider;

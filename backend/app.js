@@ -2,8 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
-import { authRoutes, folderRoutes } from "./routes/index.js";
 import cookieParser from "cookie-parser"
+
+
+import { authRoutes, folderRoutes } from "./routes/index.js";
+
 
 dotenv.config();
 

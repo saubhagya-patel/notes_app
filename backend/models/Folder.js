@@ -24,4 +24,5 @@ const folderSchema = new mongoose.Schema(
 
 folderSchema.index({ owner: 1 });
 
+
 export default mongoose.model("Folder", folderSchema);
