@@ -10,6 +10,7 @@ const generateToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
+
 export const googleLogin = async (req, res) => {
   const { idToken } = req.body;
   try {

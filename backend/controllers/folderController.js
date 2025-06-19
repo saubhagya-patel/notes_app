@@ -22,6 +22,7 @@ export const createFolder = async (req, res) => {
   }
 };
 
+
 // GET /api/folders
 export const getUserFolders = async (req, res) => {
   try {
@@ -32,6 +33,7 @@ export const getUserFolders = async (req, res) => {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
 
 // DELETE /api/folders/:id
 export const deleteFolder = async (req, res) => {
