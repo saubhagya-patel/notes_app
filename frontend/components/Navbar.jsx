@@ -8,7 +8,7 @@ import { NotesContext } from "../src/context/NotesContext";
 import profile from "../src/images/profile2.jpeg";
 
 function Navbar() {
-  const { backendUrl, user, setUser } = useContext(NotesContext);
+  const { backendUrl, user, setUser, loadingUser } = useContext(NotesContext);
   const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
@@ -17,9 +17,10 @@ function Navbar() {
       const idToken = await result.user.getIdToken();
       console.log(backendUrl)
 
-      const response = await axios.post(backendUrl + "/api/auth/google-login", {
-        idToken,
-      });
+      const response = await axios.post(backendUrl + "/api/auth/google-login",
+        { idToken },
+        { withCredentials: true }
+      );
 
       if (response.data.success) {
         toast.success("Logged in successfully");
@@ -53,23 +54,25 @@ function Navbar() {
       </ul>
 
       <div className="hidden sm:flex gap-5 text-md text-white">
-        {!user ? (
-          <button
-            onClick={handleGoogleLogin}
-            className="bg-gray-800 hover:bg-blue-600 hover:scale-105 transition duration-300 rounded-xl px-6 py-2"
-          >
-            Sign in
-          </button>
-        ) : (
-          <Link to="/profile">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-              <img
-                src={profile}
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </Link>
+        {!loadingUser && (
+          !user ? (
+            <button
+              onClick={handleGoogleLogin}
+              className="bg-gray-800 hover:bg-blue-600 hover:scale-105 transition duration-300 rounded-xl px-6 py-2"
+            >
+              Sign in
+            </button>
+          ) : (
+            <Link to="/profile">
+              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
+                <img
+                  src={user?.profilePicture || profile}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </Link>
+          )
         )}
       </div>
     </div>
