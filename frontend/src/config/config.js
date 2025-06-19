@@ -3,6 +3,8 @@ const config = {
     emailjs_public_api_key: String(import.meta.env.VITE_EMAIL_JS_PUBLIC_API_KEY),
     emailjs_template_id: String(import.meta.env.VITE_EMAIL_JS_TEMPLATE_ID),
     emailjs_service_id: String(import.meta.env.VITE_EMAIL_JS_SERVICE_ID),
+    UPLOAD_PRESET: String(import.meta.env.UPLOAD_PRESET),
+    CLOUD_NAME: String(import.meta.env.CLOUD_NAME),
 
     firebase: {
         api_key: import.meta.env.VITE_API_KEY,

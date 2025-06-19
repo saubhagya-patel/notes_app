@@ -24,7 +24,7 @@ export const googleLogin = async (req, res) => {
         name,
         email,
         googleId: uid,
-        profilePic: picture,
+        profilePicture: picture,
       });
     }
     console.log(user);
@@ -40,5 +40,21 @@ export const googleLogin = async (req, res) => {
   } catch (err) {
     console.error("Google Login Error:", err);
     res.status(401).json({ success: false, message: "Invalid ID token" });
+  }
+};
+
+
+export const  getCurrentUser = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "Not logged in" });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({ user });
+  } catch (err) {
+    res.status(401).json({ message: "Invalid or expired token" });
   }
 };
