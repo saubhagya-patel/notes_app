@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
-import { NotesContext } from "../src/context/NotesContext";
+import Tags from "@yaireo/tagify/dist/react.tagify";
+import "@yaireo/tagify/dist/tagify.css";
 import { toast } from "react-toastify";
-import config from "../src/config/config";
-import Tags from "@yaireo/tagify/dist/react.tagify"; // ✅ correct way to import the React wrapper
-import "@yaireo/tagify/dist/tagify.css"; // ✅ import Tagify styles
 
+import { NotesContext } from "../src/context/NotesContext";
+import config from "../src/config/config";
 
 function Profile() {
   const { user, backendUrl, setUser } = useContext(NotesContext);
@@ -17,24 +17,33 @@ function Profile() {
   const [uploading, setUploading] = useState(false);
   const [originalProfilePic, setOriginalProfilePic] = useState("");
   const [selectedImageFile, setSelectedImageFile] = useState(null);
-  const predefinedSubjects = ["DBMS","Operating Systems","Data Structures","Machine Learning","Computer Networks","Web Development","OOP","AI","Software Engineering",];
+  const predefinedSubjects = [
+    "DBMS",
+    "Operating Systems",
+    "Data Structures",
+    "Machine Learning",
+    "Computer Networks",
+    "Web Development",
+    "OOP",
+    "AI",
+    "Software Engineering",
+  ];
 
   useEffect(() => {
     if (user) {
       setInstitution(user.institution || "");
       setSemester(user.semester || 1);
       setProfilePic(user.profilePicture || "");
-      setOriginalProfilePic(user.profilePicture || ""); // store original
+      setOriginalProfilePic(user.profilePicture || "");
       setSubjects(user.subjects || []);
     }
   }, [user]);
-
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setSelectedImageFile(file);
-      setProfilePic(URL.createObjectURL(file)); // local preview only
+      setProfilePic(URL.createObjectURL(file));
     }
   };
   const handleSubjectsChange = (e) => {
@@ -64,7 +73,12 @@ function Profile() {
         formData.append("upload_preset", config.UPLOAD_PRESET);
         formData.append("cloud_name", config.CLOUD_NAME);
 
-        const res = await axios.post("https://api.cloudinary.com/v1_1/" + config.CLOUD_NAME + "/image/upload", formData);
+        const res = await axios.post(
+          "https://api.cloudinary.com/v1_1/" +
+            config.CLOUD_NAME +
+            "/image/upload",
+          formData
+        );
         imageUrl = res.data.secure_url;
       }
 
@@ -74,7 +88,7 @@ function Profile() {
           institution,
           semester,
           profilePic: imageUrl,
-          subjects
+          subjects,
         },
         {
           withCredentials: true,
@@ -95,14 +109,16 @@ function Profile() {
     }
   };
 
-
   if (!user) return <div className="text-white">Loading user info...</div>;
 
   return (
     <div className=" mx-auto p-6 mt-10 bg-gray-800 text-white rounded-xl shadow-lg">
       {/* <h2 className="text-2xl font-bold mb-6 text-center">Profile</h2> */}
-      <form onSubmit={handleUpdate} className="row flex flex-row gap-10 flex-wrap">
-        <div className="flex flex-col items-center gap-4 w-full sm:w-1/3" >
+      <form
+        onSubmit={handleUpdate}
+        className="row flex flex-row gap-10 flex-wrap"
+      >
+        <div className="flex flex-col items-center gap-4 w-full sm:w-1/3">
           <img
             src={profilePic || "/default-profile.png"}
             alt="Profile"
