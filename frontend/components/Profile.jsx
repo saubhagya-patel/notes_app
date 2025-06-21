@@ -23,8 +23,8 @@ function Profile() {
     if (user) {
       setInstitution(user.institution || "");
       setSemester(user.semester || 1);
-      setProfilePic(user.profilePic || "");
-      setOriginalProfilePic(user.profilePic || ""); // store original
+      setProfilePic(user.profilePicture || "");
+      setOriginalProfilePic(user.profilePicture || ""); // store original
       setSubjects(user.subjects || []);
     }
   }, [user]);
@@ -64,7 +64,7 @@ function Profile() {
         formData.append("upload_preset", config.UPLOAD_PRESET);
         formData.append("cloud_name", config.CLOUD_NAME);
 
-        const res = await axios.post("https://api.cloudinary.com/v1_1/${config.CLOUD_NAME}/image/upload", formData);
+        const res = await axios.post("https://api.cloudinary.com/v1_1/" + config.CLOUD_NAME + "/image/upload", formData);
         imageUrl = res.data.secure_url;
       }
 

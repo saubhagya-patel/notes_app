@@ -28,13 +28,14 @@ export const googleLogin = async (req, res) => {
         profilePicture: picture,
       });
     }
-    console.log(user);
 
     const token = generateToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV==="production" ? "None" : "lax",
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.json({ success: true, user });
@@ -58,4 +59,15 @@ export const  getCurrentUser = async (req, res) => {
   } catch (err) {
     res.status(401).json({ message: "Invalid or expired token" });
   }
+};
+
+
+export const  logOut = async (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV==="production" ? "None" : "lax",
+    path: "/"
+  });
+  return res.status(200).json({ success: true, message: "Logged out" });
 };

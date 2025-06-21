@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 import logo from "../src/images/logo.jpg";
 import { auth, provider, signInWithPopup } from "../library/firebase";
 import axios from "axios";
@@ -9,9 +10,11 @@ import profile from "../src/images/profile2.jpeg";
 
 function Navbar() {
   const { backendUrl, user, setUser, loadingUser } = useContext(NotesContext);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleGoogleLogin = async () => {
+    const currentPath = window.location.pathname;
     try {
       const result = await signInWithPopup(auth, provider);
       const idToken = await result.user.getIdToken();
@@ -25,7 +28,7 @@ function Navbar() {
       if (response.data.success) {
         toast.success("Logged in successfully");
         setUser(response.data.user); // 👈 save user to context
-        navigate("/");
+        navigate(currentPath);
       } else {
         toast.error("Login failed");
       }
@@ -34,6 +37,20 @@ function Navbar() {
       toast.error("Google login failed");
     }
   };
+
+
+  const handleLogout = async () => {
+  try {
+    await axios.post(backendUrl + "/api/auth/logout", {}, { withCredentials: true }); // 👈 clears the HttpOnly cookie
+    await signOut(auth); // 👈 clears Firebase client session
+    setUser(null);       // 👈 reset user in Context
+    toast.success("Logged out");
+    navigate("/");
+  } catch (error) {
+    console.error("Logout failed", error);
+    toast.error("Logout failed");
+  }
+};
 
   return (
     <div className="flex items-center justify-between pt-5 font-medium">
@@ -63,15 +80,37 @@ function Navbar() {
               Sign in
             </button>
           ) : (
-            <Link to="/profile">
-              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white">
-                <img
-                  src={user?.profilePicture || profile}
-                  alt="Profile"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </Link>
+            <div className="relative">
+  <button
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+    className="w-10 h-10 rounded-full overflow-hidden border-2 border-white focus:outline-none"
+  >
+    <img
+      src={user?.profilePicture || profile}
+      alt="Profile"
+      className="w-full h-full object-cover"
+    />
+  </button>
+
+  {dropdownOpen && (
+    <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-lg z-50">
+      <Link
+        to="/profile"
+        onClick={() => setDropdownOpen(false)}
+        className="block px-4 py-2 hover:bg-gray-100"
+      >
+        My Profile
+      </Link>
+      <button
+        onClick={handleLogout}
+        className="w-full text-left px-4 py-2 hover:bg-gray-100"
+      >
+        Logout
+      </button>
+    </div>
+  )}
+</div>
+
           )
         )}
       </div>
