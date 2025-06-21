@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { signOut } from "firebase/auth";
-import logo from "../src/images/logo.jpg";
-import { auth, provider, signInWithPopup } from "../library/firebase";
 import axios from "axios";
 import { toast } from "react-toastify";
+import React, { useContext, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+
+import logo from "../src/images/logo.jpg";
+import { auth, provider, signInWithPopup } from "../library/firebase";
 import { NotesContext } from "../src/context/NotesContext";
 import profile from "../src/images/profile2.jpeg";
 
@@ -18,16 +19,17 @@ function Navbar() {
     try {
       const result = await signInWithPopup(auth, provider);
       const idToken = await result.user.getIdToken();
-      console.log(backendUrl)
+      console.log(backendUrl);
 
-      const response = await axios.post(backendUrl + "/api/auth/google-login",
+      const response = await axios.post(
+        backendUrl + "/api/auth/google-login",
         { idToken },
         { withCredentials: true }
       );
 
       if (response.data.success) {
         toast.success("Logged in successfully");
-        setUser(response.data.user); // 👈 save user to context
+        setUser(response.data.user);
         navigate(currentPath);
       } else {
         toast.error("Login failed");
@@ -38,19 +40,22 @@ function Navbar() {
     }
   };
 
-
   const handleLogout = async () => {
-  try {
-    await axios.post(backendUrl + "/api/auth/logout", {}, { withCredentials: true }); // 👈 clears the HttpOnly cookie
-    await signOut(auth); // 👈 clears Firebase client session
-    setUser(null);       // 👈 reset user in Context
-    toast.success("Logged out");
-    navigate("/");
-  } catch (error) {
-    console.error("Logout failed", error);
-    toast.error("Logout failed");
-  }
-};
+    try {
+      await axios.post(
+        backendUrl + "/api/auth/logout",
+        {},
+        { withCredentials: true }
+      );
+      await signOut(auth);
+      setUser(null);
+      toast.success("Logged out");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed", error);
+      toast.error("Logout failed");
+    }
+  };
 
   return (
     <div className="flex items-center justify-between pt-5 font-medium">
@@ -71,8 +76,8 @@ function Navbar() {
       </ul>
 
       <div className="hidden sm:flex gap-5 text-md text-white">
-        {!loadingUser && (
-          !user ? (
+        {!loadingUser &&
+          (!user ? (
             <button
               onClick={handleGoogleLogin}
               className="bg-gray-800 hover:bg-blue-600 hover:scale-105 transition duration-300 rounded-xl px-6 py-2"
@@ -81,38 +86,36 @@ function Navbar() {
             </button>
           ) : (
             <div className="relative">
-  <button
-    onClick={() => setDropdownOpen(!dropdownOpen)}
-    className="w-10 h-10 rounded-full overflow-hidden border-2 border-white focus:outline-none"
-  >
-    <img
-      src={user?.profilePicture || profile}
-      alt="Profile"
-      className="w-full h-full object-cover"
-    />
-  </button>
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-10 h-10 rounded-full overflow-hidden border-2 border-white focus:outline-none"
+              >
+                <img
+                  src={user?.profilePicture || profile}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </button>
 
-  {dropdownOpen && (
-    <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-lg z-50">
-      <Link
-        to="/profile"
-        onClick={() => setDropdownOpen(false)}
-        className="block px-4 py-2 hover:bg-gray-100"
-      >
-        My Profile
-      </Link>
-      <button
-        onClick={handleLogout}
-        className="w-full text-left px-4 py-2 hover:bg-gray-100"
-      >
-        Logout
-      </button>
-    </div>
-  )}
-</div>
-
-          )
-        )}
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded-md shadow-lg z-50">
+                  <Link
+                    to="/profile"
+                    onClick={() => setDropdownOpen(false)}
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    My Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { NotesContext } from "../src/context/NotesContext"; // Adjust path if needed
+
+import { NotesContext } from "../src/context/NotesContext";
 
 function Home() {
   const navigate = useNavigate();
-  const { user } = useContext(NotesContext); // Get the user from context
+  const { user } = useContext(NotesContext);
 
   const handleGetStarted = () => {
     if (user) {
       navigate("/semester");
     } else {
-      toast.info("Please login first"); // 🔔 Show toast if not logged in
+      toast.info("Please login first");
     }
   };
 

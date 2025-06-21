@@ -2,11 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
-import { authRoutes, folderRoutes, userRoutes } from "./routes/index.js";
 import cookieParser from "cookie-parser"
 
 
-import { authRoutes, folderRoutes } from "./routes/index.js";
+import { authRoutes, folderRoutes, userRoutes } from "./routes/index.js";
+import { authMiddleware } from "./middlewares/index.js";
 
 
 dotenv.config();
@@ -29,9 +29,6 @@ mongoose
     });
   })
   .catch((err) => console.error("DB error:", err));
-
-
-import { authMiddleware } from "./middlewares/index.js";
 
 
 app.use("/api/auth", authRoutes);

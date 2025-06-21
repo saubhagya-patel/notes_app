@@ -1,6 +1,7 @@
 import React, { useRef, useContext } from "react";
 import emailjs from "emailjs-com";
 import { toast } from "react-toastify";
+
 import { NotesContext } from "../src/context/NotesContext";
 import config from "../src/config/config";
 
