@@ -5,7 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser"
 
 
-import { authRoutes, folderRoutes, userRoutes } from "./routes/index.js";
+import { authRoutes, folderRoutes, noteRoutes, userRoutes } from "./routes/index.js";
 import { authMiddleware } from "./middlewares/index.js";
 
 
@@ -34,6 +34,7 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/folders", folderRoutes)
+app.use("/api/notes/", noteRoutes)
 
 
 app.get("/api/test", authMiddleware.protect, (req, res) => {
