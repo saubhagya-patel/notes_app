@@ -40,3 +40,4 @@ uploads/
 temp/
 *.local
 *.sublime-workspace
+dummy.pdf
