@@ -12,10 +12,22 @@ const folderSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    isCoreFolder: { type: Boolean, default: false },
     notes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Note",
+      },
+    ],
+    parent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Folder",
+      default: null,
+    },
+    subfolders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Folder",
       },
     ],
   },

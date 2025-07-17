@@ -18,7 +18,7 @@ const streamUpload = (file) => {
 
   return new Promise((resolve, reject) => {
     cloudinaryUtil.uploader.upload_stream(
-      { resource_type: resourceType, folder: "notes_manager" },
+      { resource_type: resourceType, folder: "notes_manager", access_mode: "public" },
       (err, result) => {
         if (err) reject(err);
         else resolve(result);
@@ -115,7 +115,9 @@ export const deleteNote = async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized" });
 
     await Note.findByIdAndDelete(note._id);
-    await Folder.findByIdAndUpdate(note.folder, { $pull: { notes: note._id } });
+    if (note.folder) {
+      await Folder.findByIdAndUpdate(note.folder, { $pull: { notes: note._id } });
+    }
 
     res.json({ success: true, message: "Note deleted" });
   } catch (err) {
