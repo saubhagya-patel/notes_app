@@ -4,6 +4,8 @@ import Home from "./Home";
 import Navbar from "./Navbar";
 import Profile from "./Profile";
 import Semester from "./Semester";
+import MyFolders from "./MyFolders";
+import SubjectFolders from "./SubjectFolders";
 
 
 export {
@@ -13,4 +15,6 @@ export {
     Navbar,
     Profile,
     Semester,
+    MyFolders,
+    SubjectFolders
 }

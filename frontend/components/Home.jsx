@@ -10,7 +10,7 @@ function Home() {
 
   const handleGetStarted = () => {
     if (user) {
-      navigate("/semester");
+      navigate("/user/home");
     } else {
       toast.info("Please login first");
     }

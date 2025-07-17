@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 
 import "./App.css";
 import { About, Contact, Home, Navbar, Profile, Semester } from "../components";
+import  {UserHome , FolderView , PdfView}  from "./pages"
 
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/semester" element={<Semester />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/user/home" element={<UserHome />} />
+        <Route path="/folders/:folderId" element={<FolderView />} />
+        <Route path="/view/:noteId" element={<PdfView />} />
       </Routes>
     </div>
   );
