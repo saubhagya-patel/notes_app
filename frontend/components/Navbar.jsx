@@ -4,7 +4,7 @@ import React, { useContext, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 
-import logo from "../src/images/logo.jpg";
+import logo from "../src/images/note_icon.png";
 import { auth, provider, signInWithPopup } from "../library/firebase";
 import { NotesContext } from "../src/context/NotesContext";
 import profile from "../src/images/profile2.jpeg";
@@ -60,7 +60,7 @@ function Navbar() {
   return (
     <div className="flex items-center justify-between pt-5 font-medium">
       <Link to="/">
-        <img src={logo} className="w-20" alt="" />
+        <img src={logo} className="w-13" alt="" />
       </Link>
 
       <ul className="hidden sm:flex gap-5 text-md text-white">
