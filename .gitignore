@@ -41,3 +41,14 @@ temp/
 *.local
 *.sublime-workspace
 dummy.pdf
+
+
+user -> admin -> public wale delete kar sakta hai
+              --> dashboard hi hoga
+                    --> list of semesters update kar sakta hai
+                    --> kisi bhi subject ko manage karega
+                    --> naya subject add, delete
+
+update navbar
+
+

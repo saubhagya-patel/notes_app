@@ -14,31 +14,41 @@ function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleGoogleLogin = async () => {
-    const currentPath = window.location.pathname;
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const idToken = await result.user.getIdToken();
-      console.log(backendUrl);
+const handleGoogleLogin = async () => {
+  // Keep track of the page the user was on before starting the login process
+  const currentPath = window.location.pathname;
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const idToken = await result.user.getIdToken();
 
-      const response = await axios.post(
-        backendUrl + "/api/auth/google-login",
-        { idToken },
-        { withCredentials: true }
-      );
+    const response = await axios.post(
+      `${backendUrl}/api/auth/google-login`,
+      { idToken },
+      { withCredentials: true }
+    );
 
-      if (response.data.success) {
-        toast.success("Logged in successfully");
-        setUser(response.data.user);
-        navigate(currentPath);
+    if (response.data.success) {
+      toast.success("Logged in successfully");
+      const user = response.data.user;
+      setUser(user);
+
+      // --- New Logic ---
+      // Check the user's role and navigate accordingly
+      if (user.role === 'admin') {
+        navigate('/admin-dashboard'); // Or your preferred admin route
       } else {
-        toast.error("Login failed");
+        // For regular users, navigate to the page they were on, or a default page
+        navigate(currentPath === '/login' ? '/' : currentPath);
       }
-    } catch (error) {
-      console.error("Google Login Error", error);
-      toast.error("Google login failed");
+      
+    } else {
+      toast.error("Login failed");
     }
-  };
+  } catch (error) {
+    console.error("Google Login Error", error);
+    toast.error("Google login failed");
+  }
+};
 
   const handleLogout = async () => {
     try {
@@ -72,6 +82,12 @@ function Navbar() {
         </NavLink>
         <NavLink to="/contact" className="flex flex-col items-center gap-1">
           <p>Contact</p>
+        </NavLink>
+        <NavLink to="/user/home" className="flex flex-col items-center gap-1">
+          <p>Home_updated</p>
+        </NavLink>
+        <NavLink to="/resources" className="flex flex-col items-center gap-1">
+          <p>Resources</p>
         </NavLink>
       </ul>
 

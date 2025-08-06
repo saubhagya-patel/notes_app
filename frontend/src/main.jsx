@@ -12,6 +12,7 @@ import { theme } from "./config/theme.js";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <BrowserRouter>
         <NotesContextProvider>
           <App />
