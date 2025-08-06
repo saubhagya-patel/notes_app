@@ -6,6 +6,11 @@ import Profile from "./Profile";
 import Semester from "./Semester";
 import MyFolders from "./MyFolders";
 import SubjectFolders from "./SubjectFolders";
+import CreateFolderModal from "./CreateFolderModal";
+import FolderCard from "./FolderCard";
+import NoteCard from "./NoteCard";
+import UploadNoteModal from "./UploadNoteModal";
+import UploadNoteButton from "./UploadNotesButton";
 
 
 export {
@@ -16,5 +21,10 @@ export {
     Profile,
     Semester,
     MyFolders,
-    SubjectFolders
+    SubjectFolders,
+    CreateFolderModal,
+    FolderCard,
+    NoteCard,
+    UploadNoteModal,
+    UploadNoteButton,
 }

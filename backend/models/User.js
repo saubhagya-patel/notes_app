@@ -43,7 +43,7 @@ const userSchema = new mongoose.Schema(
 
     institution: {
       type: String,
-      default: "",
+      default: "NSUT",
     },
 
     role: {
